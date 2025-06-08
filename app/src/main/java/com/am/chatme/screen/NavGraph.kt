@@ -19,6 +19,7 @@ fun NavigationGraph(
             SignUpScreen (authViewModel = authViewModel, onNavigationToLogin = {
                 navController.navigate(Screen.LoginScreen.route)})
         }
+
         composable (Screen.LoginScreen.route){
             LoginScreen(authViewModel = authViewModel,
                 onNavigationToSignUp = {
@@ -26,6 +27,16 @@ fun NavigationGraph(
             }){
                 navController.navigate(Screen.ChatRoomsScreen.route)
             }
+        }
+        composable(Screen.ChatRoomsScreen.route) {
+            ChatRoomList {
+                navController.navigate("${Screen.ChatScreen.route}/${it.id}")
+            }
+        }
+        composable("${Screen.ChatScreen.route}/{roomId}") {
+            val roomId: String = it
+                .arguments?.getString("roomId") ?: ""
+            ChatScreen(roomId = roomId)
         }
     }
 
